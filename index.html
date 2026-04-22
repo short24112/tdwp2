@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שאלה חשובה לשירה...</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap');
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #111;
+            background-image: radial-gradient(circle at center, #222 0%, #000 100%);
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 90%;
+            width: 450px;
+            z-index: 10;
+            animation: popIn 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        h1 {
+            color: #ff3366;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 900;
+            text-shadow: 2px 2px 10px rgba(255, 51, 102, 0.5);
+        }
+
+        p {
+            font-size: 1.3em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .movie-title {
+            font-size: 1.5em;
+            font-weight: 900;
+            color: #fff;
+            background: #e60000;
+            padding: 5px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            transform: rotate(-3deg);
+            box-shadow: 3px 3px 0 #fff;
+            margin: 15px 0 30px 0;
+            letter-spacing: 1px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 60px;
+            position: relative;
+        }
+
+        button {
+            font-family: 'Heebo', sans-serif;
+            font-size: 1.2em;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #yesBtn {
+            background: linear-gradient(45deg, #ff3366, #ff0040);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.5);
+            z-index: 5;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.8);
+        }
+
+        #noBtn {
+            background-color: #333;
+            color: #aaa;
+            position: relative;
+            z-index: 20;
+        }
+
+        #successMessage {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 1s forwards;
+        }
+
+        .success-title {
+            color: #4CAF50;
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* עיצוב ל-GIF כדי שייראה טוב בתוך החלון */
+        #successGif {
+            max-width: 100%;
+            border-radius: 15px;
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* אנימציות */
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(-3deg); }
+            50% { transform: translateY(-10px) rotate(-1deg); }
+            100% { transform: translateY(0px) rotate(-3deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 30px;
+            pointer-events: none;
+            z-index: 100;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <h1>היי שירה... 🤍</h1>
+        <p>יש לי שאלה קטנה אבל מאוד (מאוד) חשובה אליך:</p>
+        <p>בא לך לצאת איתי לדייט לראות את</p>
+        <div class="movie-title">השטן לובשת פראדה 2</div>
+        <p>בקולנוע?</p>
+
+        <div class="buttons" id="buttonContainer">
+            <button id="yesBtn" onclick="acceptDate()">ברור שכן! 👠</button>
+            <button id="noBtn">פחות...</button>
+        </div>
+
+        <div id="successMessage">
+            <div class="success-title">ידעתי שתסכימי! 🎉</div>
+            <p>תתכונני, כי זה הולך להיות דייט מהסרטים (תרתי משמע).<br>אוהב מלא! ❤️</p>
+            
+            <img id="successGif" src="https://media.tenor.com/l2YDCpF8cGAAAAAi/dudu-bubu-dudu-bubu-popcorn.gif" alt="Yay GIF">
+        </div>
+    </div>
+
+    <audio id="successAudio">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const successAudio = document.getElementById('successAudio');
+        
+        const funnyNoResponses = [
+            "אין אופציה כזאת 😂",
+            "תנסי את הכפתור השני 😉",
+            "אופס, החליקה האצבע?",
+            "לא מקובל עליי 🙅‍♂️",
+            "נו די, פשוט תלחצי כן 🤍"
+        ];
+        
+        let clickCount = 0;
+        let isDodgingActive = false;
+
+        const dodgeButton = () => {
+            const safeMargin = 60; 
+            const maxX = window.innerWidth - noBtn.offsetWidth - safeMargin;
+            const maxY = window.innerHeight - noBtn.offsetHeight - safeMargin;
+            
+            const randomX = Math.max(safeMargin, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(safeMargin, Math.floor(Math.random() * maxY));
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        };
+
+        noBtn.addEventListener('click', (e) => {
+            if (!isDodgingActive) {
+                isDodgingActive = true;
+                
+                noBtn.addEventListener('mouseover', dodgeButton);
+                noBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault(); 
+                    dodgeButton();
+                });
+            }
+            
+            noBtn.innerText = funnyNoResponses[clickCount % funnyNoResponses.length];
+            clickCount++;
+            
+            dodgeButton();
+        });
+
+        function acceptDate() {
+            document.getElementById('buttonContainer').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // הפעלת המוזיקה
+            successAudio.play().catch(error => {
+                console.log("Audio play failed:", error);
+            });
+            
+            const emojis = ['👠', '👗', '✨', '🍿', '❤️', '🎬', '👜'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const emojiEl = document.createElement('div');
+                    emojiEl.classList.add('emoji');
+                    emojiEl.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    
+                    emojiEl.style.left = Math.random() * 100 + 'vw';
+                    emojiEl.style.top = '-50px';
+                    
+                    emojiEl.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    emojiEl.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                    
+                    document.body.appendChild(emojiEl);
+                    
+                    setTimeout(() => {
+                        emojiEl.remove();
+                    }, 5000);
+                }, i * 100);
+            }
+        }
+    </script>
+</body>
+</html>
