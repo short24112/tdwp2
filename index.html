@@ -17,14 +17,12 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            
-            /* התיקונים לגלילה בטלפון: */
-            min-height: 100vh; /* מאפשר לדף לגדול אם צריך */
+            min-height: 100vh;
             margin: 0;
-            padding: 40px 0; /* מרווח ביטחון למעלה ולמטה */
+            padding: 40px 0;
             box-sizing: border-box;
-            overflow-x: hidden; /* מונע רק גלילה הצידה כשהכפתור בורח */
-            overflow-y: auto; /* מאפשר גלילה למטה! */
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         .container {
@@ -129,6 +127,51 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
+        /* עיצוב להודעת המערכת */
+        .vip-details {
+            margin-top: 25px;
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(255, 0, 64, 0.2));
+            border: 1px solid rgba(255, 51, 102, 0.4);
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.1em;
+            line-height: 1.4;
+            color: #fff;
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards;
+            animation-delay: 2s;
+        }
+
+        .pulse-icon {
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+            font-size: 1.2em;
+            margin-left: 5px;
+        }
+
+        /* עיצוב לכפתור וואטסאפ */
+        .whatsapp-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #25D366;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards;
+            animation-delay: 2.5s; /* מופיע קצת אחרי הודעת המערכת */
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+
         /* אנימציות */
         @keyframes popIn {
             0% { transform: scale(0.8); opacity: 0; }
@@ -144,6 +187,17 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
         }
 
         .emoji {
@@ -179,6 +233,16 @@
             <div class="success-title">ידעתי שתסכימי! 🎉</div>
             <p>תתכונני, כי זה הולך להיות דייט מהסרטים (תרתי משמע).<br>אוהב מלא! ❤️</p>
             <img id="successGif" src="https://media.tenor.com/l2YDCpF8cGAAAAAi/dudu-bubu-dudu-bubu-popcorn.gif" alt="Yay GIF">
+            
+            <div class="vip-details">
+                <span class="pulse-icon">📱</span> 
+                <strong>הודעת מערכת:</strong><br>
+                השעה והמיקום המדויק ישלחו אלייך לווטסאפ בקרוב... תתלבשי בסטייל! ✨
+            </div>
+
+            <a href="https://wa.me/972506707099?text=ברור%20שאני%20באה!%20%F0%9F%91%A0%20מחכה%20לפרטים" class="whatsapp-btn" target="_blank">
+                לחצי כאן לשלוח לי אישור בוואטסאפ! 💚
+            </a>
         </div>
     </div>
 
@@ -216,28 +280,22 @@
             noBtn.style.top = randomY + 'px';
         };
 
-        // פונקציה אחידה שמטפלת גם בלחיצה במחשב וגם בנגיעה בטלפון
         const handleInteraction = (e) => {
-            // מונע את הבעיה בטלפון שמבטלת את הלחיצה
             if (e.type === 'touchstart') {
                 e.preventDefault(); 
             }
 
-            // משנה את הטקסט בכל פעם שמצליחים ללחוץ/לגעת
             noBtn.innerText = funnyNoResponses[clickCount % funnyNoResponses.length];
             clickCount++;
 
-            // אם זו פעם ראשונה, מפעילים את הבריחה למחשב
             if (!isDodgingActive) {
                 isDodgingActive = true;
                 noBtn.addEventListener('mouseover', moveButton);
             }
             
-            // מזיז את הכפתור מיד
             moveButton();
         };
 
-        // מאזינים לשני סוגי הפעולות
         noBtn.addEventListener('click', handleInteraction);
         noBtn.addEventListener('touchstart', handleInteraction);
 
@@ -245,10 +303,9 @@
             document.getElementById('buttonContainer').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             
-            // גלילה חלקה למטה כדי לוודא שרואים את כל ה-GIF אם המסך קטן
             setTimeout(() => {
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }, 100);
+            }, 2100); 
             
             successAudio.play().catch(error => {
                 console.log("Audio play failed:", error);
