@@ -17,9 +17,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            
+            /* התיקונים לגלילה בטלפון: */
+            min-height: 100vh; /* מאפשר לדף לגדול אם צריך */
             margin: 0;
-            overflow: hidden;
+            padding: 40px 0; /* מרווח ביטחון למעלה ולמטה */
+            box-sizing: border-box;
+            overflow-x: hidden; /* מונע רק גלילה הצידה כשהכפתור בורח */
+            overflow-y: auto; /* מאפשר גלילה למטה! */
         }
 
         .container {
@@ -33,6 +38,7 @@
             width: 450px;
             z-index: 10;
             animation: popIn 1s cubic-bezier(0.25, 1, 0.5, 1);
+            margin: auto;
         }
 
         h1 {
@@ -116,7 +122,6 @@
             margin-bottom: 10px;
         }
 
-        /* עיצוב ל-GIF כדי שייראה טוב בתוך החלון */
         #successGif {
             max-width: 100%;
             border-radius: 15px;
@@ -173,7 +178,6 @@
         <div id="successMessage">
             <div class="success-title">ידעתי שתסכימי! 🎉</div>
             <p>תתכונני, כי זה הולך להיות דייט מהסרטים (תרתי משמע).<br>אוהב מלא! ❤️</p>
-            
             <img id="successGif" src="https://media.tenor.com/l2YDCpF8cGAAAAAi/dudu-bubu-dudu-bubu-popcorn.gif" alt="Yay GIF">
         </div>
     </div>
@@ -191,13 +195,15 @@
             "תנסי את הכפתור השני 😉",
             "אופס, החליקה האצבע?",
             "לא מקובל עליי 🙅‍♂️",
-            "נו די, פשוט תלחצי כן 🤍"
+            "נו די, פשוט תלחצי כן 🤍",
+            "זה לא יעזור לך...",
+            "אני יכול להמשיך ככה כל היום"
         ];
         
         let clickCount = 0;
         let isDodgingActive = false;
 
-        const dodgeButton = () => {
+        const moveButton = () => {
             const safeMargin = 60; 
             const maxX = window.innerWidth - noBtn.offsetWidth - safeMargin;
             const maxY = window.innerHeight - noBtn.offsetHeight - safeMargin;
@@ -210,28 +216,40 @@
             noBtn.style.top = randomY + 'px';
         };
 
-        noBtn.addEventListener('click', (e) => {
-            if (!isDodgingActive) {
-                isDodgingActive = true;
-                
-                noBtn.addEventListener('mouseover', dodgeButton);
-                noBtn.addEventListener('touchstart', (e) => {
-                    e.preventDefault(); 
-                    dodgeButton();
-                });
+        // פונקציה אחידה שמטפלת גם בלחיצה במחשב וגם בנגיעה בטלפון
+        const handleInteraction = (e) => {
+            // מונע את הבעיה בטלפון שמבטלת את הלחיצה
+            if (e.type === 'touchstart') {
+                e.preventDefault(); 
             }
-            
+
+            // משנה את הטקסט בכל פעם שמצליחים ללחוץ/לגעת
             noBtn.innerText = funnyNoResponses[clickCount % funnyNoResponses.length];
             clickCount++;
+
+            // אם זו פעם ראשונה, מפעילים את הבריחה למחשב
+            if (!isDodgingActive) {
+                isDodgingActive = true;
+                noBtn.addEventListener('mouseover', moveButton);
+            }
             
-            dodgeButton();
-        });
+            // מזיז את הכפתור מיד
+            moveButton();
+        };
+
+        // מאזינים לשני סוגי הפעולות
+        noBtn.addEventListener('click', handleInteraction);
+        noBtn.addEventListener('touchstart', handleInteraction);
 
         function acceptDate() {
             document.getElementById('buttonContainer').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             
-            // הפעלת המוזיקה
+            // גלילה חלקה למטה כדי לוודא שרואים את כל ה-GIF אם המסך קטן
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 100);
+            
             successAudio.play().catch(error => {
                 console.log("Audio play failed:", error);
             });
